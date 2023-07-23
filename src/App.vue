@@ -1,16 +1,11 @@
 <template>
-  <div>
-    {{ $store.state.user.profile.account }}
-    <button @click="$store.commit('user/setUser', { account: 'zhg' })">
-      设置用户信息
-    </button>
-  </div>
+  <!-- 一级路由 -->
+  <RouterView />
 </template>
 
 <script>
 export default {
-  name: 'App',
-  setup () {}
+  name: 'App'
 }
 </script>
 
