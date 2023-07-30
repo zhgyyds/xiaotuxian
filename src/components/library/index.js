@@ -1,13 +1,24 @@
-import XtxSkeleton from '@/components/library/xtx-skeleton.vue'
-import XtxCarousel from '@/components/library/xtx-carousel.vue'
-import XtxMore from '@/components/library/xtx-more.vue'
+// import XtxSkeleton from '@/components/library/xtx-skeleton.vue'
+// import XtxCarousel from '@/components/library/xtx-carousel.vue'
+// import XtxMore from '@/components/library/xtx-more.vue'
+// import XtxBread from '@/components/library/xtx-bread.vue'
+// import XtxBreadItem from './xtx-bread-item.vue'
 import defaultImg from '@/assets/images/200.png'
+
+const importFn = require.context('./', false, /\.vue$/)
 
 export default {
   install (app) {
-    app.component(XtxSkeleton.name, XtxSkeleton)
-    app.component(XtxCarousel.name, XtxCarousel)
-    app.component(XtxMore.name, XtxMore)
+    // app.component(XtxSkeleton.name, XtxSkeleton)
+    // app.component(XtxCarousel.name, XtxCarousel)
+    // app.component(XtxMore.name, XtxMore)
+    // app.component(XtxBread.name, XtxBread)
+    // app.component(XtxBreadItem.name, XtxBreadItem)
+
+    importFn.keys().forEach(path => {
+      const component = importFn(path).default
+      app.component(component.name, component)
+    })
     // 定义指令
     defineDirective(app)
   }
