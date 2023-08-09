@@ -22,7 +22,11 @@
           <GoodsName :goods="goods" />
           <GoodsSku :goods="goods" @change="changeSku" />
           <XtxNumbox v-model="num" :max="goods.inventory" label="数量" />
-          <XtxButton type="primary" size="middle" style="margin-top: 20px"
+          <XtxButton
+            @click="insertCart"
+            type="primary"
+            size="middle"
+            style="margin-top: 20px"
             >加入购物车</XtxButton
           >
         </div>
@@ -62,6 +66,8 @@ import GoodsName from './components/goods-name.vue'
 import GoodsSku from './components/goods-sku'
 import GoodsHot from './components/goods-hot'
 import GoodsWarn from './components/goods-warn'
+import Message from '@/components/library/Message'
+import { useStore } from 'vuex'
 export default {
   name: 'XtxGoodsPage',
   components: {
@@ -83,9 +89,40 @@ export default {
         goods.value.oldPrice = sku.oldPrice
         goods.value.inventory = sku.inventory
       }
+      // 记录选择后的sku，可能有数据，可能没数据
+      currSku.value = sku
     }
     provide('goods', goods)
-    return { goods, changeSku, num }
+
+    // 加入购物车--------------------------------
+    const store = useStore()
+    const currSku = ref(null)
+    const insertCart = () => {
+      if (currSku.value && currSku.value.skuId) {
+        const { skuId, specsText: attrsText, inventory: stock } = currSku.value
+        const { id, name, price, mainPictures } = goods.value
+        store
+          .dispatch('cart/insertCart', {
+            skuId,
+            attrsText,
+            stock,
+            id,
+            name,
+            price,
+            nowPrice: price,
+            picture: mainPictures[0],
+            selected: true,
+            isEffective: true,
+            count: num.value
+          })
+          .then(() => {
+            Message({ type: 'success', text: '添加购物车成功' })
+          })
+      } else {
+        Message({ text: '请选择完整规格' })
+      }
+    }
+    return { goods, changeSku, num, insertCart }
   }
 }
 const useGoods = () => {
@@ -105,6 +142,7 @@ const useGoods = () => {
     },
     { immediate: true }
   )
+
   return goods
 }
 </script>

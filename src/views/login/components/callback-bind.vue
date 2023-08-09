@@ -142,10 +142,12 @@ export default {
               nickname,
               token
             })
-            //   进行跳转
-            router.push(route.query.redirectUrl || '/')
-            //   消息提示
-            Message({ type: 'success', text: '登录成功' })
+            store.dispatch('cart/mergeCart').then(() => {
+              //   进行跳转
+              router.push(route.query.redirectUrl || '/')
+              //   消息提示
+              Message({ type: 'success', text: '登录成功' })
+            })
           })
           .catch((e) => {
             Message({ type: 'error', text: '绑定失败' })

@@ -37,7 +37,6 @@ export default {
       goodsList.value = data.result
     })
 
-    console.log(goodsList)
     return { title, goodsList }
   }
 }

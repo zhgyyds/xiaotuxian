@@ -119,7 +119,11 @@ import { onUnmounted, reactive, ref, watch } from 'vue'
 import schema from '@/utils/vee-validate-schema'
 import { Form, Field } from 'vee-validate'
 import Message from '@/components/library/Message'
-import { userAccountLogin, userMobileLoginMsg, userMobileLogin } from '@/api/user'
+import {
+  userAccountLogin,
+  userMobileLoginMsg,
+  userMobileLogin
+} from '@/api/user'
 import { useIntervalFn } from '@vueuse/core'
 import { useStore } from 'vuex'
 import { useRoute, useRouter } from 'vue-router'
@@ -210,10 +214,12 @@ export default {
             nickname,
             token
           })
-          //   进行跳转
-          router.push(route.query.redirectUrl || '/')
-          //   消息提示
-          Message({ type: 'success', text: '登录成功' })
+          store.dispatch('cart/mergeCart').then(() => {
+            //   进行跳转
+            router.push(route.query.redirectUrl || '/')
+            //   消息提示
+            Message({ type: 'success', text: '登录成功' })
+          })
         } catch (err) {
           if (err.response.data) {
             Message({

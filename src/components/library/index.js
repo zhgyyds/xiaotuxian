@@ -4,7 +4,8 @@
 // import XtxBread from '@/components/library/xtx-bread.vue'
 // import XtxBreadItem from './xtx-bread-item.vue'
 import defaultImg from '@/assets/images/200.png'
-
+import Confirm from './Confirm'
+import Message from './Message'
 const importFn = require.context('./', false, /\.vue$/)
 
 export default {
@@ -21,6 +22,10 @@ export default {
     })
     // 定义指令
     defineDirective(app)
+
+    // 如果你想挂载全局的属性，能够通过组件实例调用的属性   this.$message
+    app.config.globalProperties.$message = Message
+    app.config.globalProperties.$confirm = Confirm
   }
 }
 

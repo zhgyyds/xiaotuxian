@@ -35,8 +35,10 @@ export default {
     const store = useStore()
     const router = useRouter()
     const profile = computed(() => store.state.user.profile)
+    // 退出登录------------------------------
     const logout = () => {
       store.commit('user/setUser', {})
+      store.commit('cart/setCart', [])
       router.push('/login')
     }
     return { profile, logout }

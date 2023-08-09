@@ -44,7 +44,7 @@ import { ref } from 'vue'
 import QC from 'qc'
 import { userQQLogin } from '@/api/user'
 import { useStore } from 'vuex'
-import { useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import Message from '@/components/library/Message'
 export default {
   name: 'LoginCallback',
@@ -57,6 +57,7 @@ export default {
   setup () {
     const store = useStore()
     const router = useRouter()
+    const route = useRoute()
 
     const hasAccount = ref(true)
     const isBind = ref(true)
@@ -79,10 +80,12 @@ export default {
               token
             })
 
-            //   进行跳转
-            router.push(store.state.user.redirectUrl || '/')
-            //   消息提示
-            Message({ type: 'success', text: 'QQ登录成功' })
+            store.dispatch('cart/mergeCart').then(() => {
+              //   进行跳转
+              router.push(route.query.redirectUrl || '/')
+              //   消息提示
+              Message({ type: 'success', text: '登录成功' })
+            })
           })
           .catch((e) => {
             // 登录失败，没有和小兔鲜绑定
