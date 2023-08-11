@@ -1,3 +1,4 @@
+import { h } from 'vue'
 import { createRouter, createWebHashHistory } from 'vue-router'
 
 const Layout = () =>
@@ -23,7 +24,14 @@ const PayIndex = () =>
   import('@/views/member/pay/index')
 const XtxPayResultPage = () =>
   import('@/views/member/pay/result')
-
+const MemberLayout = () =>
+  import('@/views/member/Layout')
+const MemberHome = () =>
+  import('@/views/member/home')
+const MemberOrder = () =>
+  import('@/views/member/order')
+const MemberOrderDetail = () =>
+  import('@/views/member/order/detail')
 const routes = [{
   path: '/',
   component: Layout,
@@ -38,6 +46,25 @@ const routes = [{
     {
       path: '/pay/callback',
       component: XtxPayResultPage
+    },
+    {
+      path: '/member',
+      component: MemberLayout,
+      children: [
+        { path: '/member', component: MemberHome },
+        // { path: '/member/order', component: MemberOrder },
+        // { path: '/member/order/:id', component: MemberOrderDetail }
+        {
+          path: '/member/order/',
+          component: {
+            render: () => h(< RouterView / >)
+          },
+          children: [
+            { path: '', component: MemberOrder },
+            { path: ':id', component: MemberOrderDetail }
+          ]
+        }
+      ]
     }
 
   ]
